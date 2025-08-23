@@ -2,6 +2,10 @@
 	'use strict';
 
 	class P7SVGtext {
+		constructor() {
+			this.active = false;
+		}
+
 		options = {
 			enabled: true
 		}
@@ -17,14 +21,13 @@
 		}
 
 		init() {
-			this.active = false;
-
+			console.log("init")
 			window.addEventListener('message', (event) => {
 				const receivedMessage = event.data;
 
 				if (receivedMessage && receivedMessage.startsWith("data:image/svg+xml;charset=utf-8,")) {
-					addImage("Text import", receivedMessage);
-					document.body.removeChild(document.getElementById("svgtextoverlay"));
+					addons.costumes.add("Text import", receivedMessage);
+					document.body.removeChild(document.getElementById("widgetoverlay"));
 				}
 			});
 		}
@@ -33,15 +36,16 @@
 			switch (type) {
 			case "TabChanged":
 				if (data.TAB == "costumes") {
+					console.log(type, data, this.active)
 					if (!this.active) return;
 
-					addons.tab.costumes.addCreationButton(
+					addons.costumes.addCreationButton(
 						'P7SVGTextButton',
 						'Add text as SVG',
 						'//p7scratchextensions.pages.dev/extras/images/icons/AddTextIcon.svg',
 
 						async () => {
-							MakeWidget(
+							addons.makeWidget(
 								"https://p7scratchextensions.pages.dev/extras/html/SVGtext",
 								"Text import"
 							);
@@ -53,10 +57,12 @@
 		}
 
 		start() {
+			console.log("enabled")
 			this.active = true;
 		}
 
 		stop() {
+			console.log("disabled")
 			this.active = false;
 		}
 	}
