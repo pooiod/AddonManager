@@ -7,6 +7,10 @@
 // @include        https://studio.penguinmod.com/*
 // @include        https://mirror.turbowarp.xyz/*
 // @include        https://turbowarp.org/*
+// @include        https://dinosaurmod.github.io/*
+// @include        https://snail-ide.js.org/*
+// @include        https://librekitten.org/*
+// @include        https://alpha.unsandboxed.org/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=penguinmod.com
 // @grant        none
 // ==/UserScript==
@@ -497,7 +501,7 @@ addons.register = (addon) => {
 		addon.options = settings[info.id];
 	}
 
-	if (addon.options.enabled == true) {
+	if (addon.options.enabled == true && !InAddonManager) {
 		addon.init();
 		addon.start();
 	}
@@ -564,8 +568,6 @@ addons.getSettings()["scripts"].forEach(function(url) {
 		});
 });
 
-
-
 function displayAddonReloadButton() {
 	const div=document.createElement("div");
 	div.className="settings_dirty-outer_WmNYy";
@@ -608,10 +610,25 @@ function displayAddons() {
 
 	document.querySelector('#app > div > div.settings_addons_2LLFF > div > div:nth-child(1)').appendChild(addonGroupDiv);
 
-	for (const id in addons.registered) {
-		var addon = addons.registered[id];
-		var info = addon.getInfo();
-		createAddon(info.id, info.name, info.description, info.author, addon.options)
+	if (!addons.registered || Object.keys(addons.registered).length < 1) {
+		const noscriptsbutton = document.createElement('button');
+		noscriptsbutton.classList.add("settings_button_2ovv0", "settings_import-button_1NMJN");
+		noscriptsbutton.innerText = "Add";
+		noscriptsbutton.style.marginTop = "10px";
+		noscriptsbutton.style.marginLeft = "5px";
+		noscriptsbutton.style.marginBottom = "30px";
+
+		noscriptsbutton.onclick=()=>{
+			ManageScripts();
+		}
+
+		document.getElementById('3rdPartyGroup').appendChild(noscriptsbutton);
+	} else {
+		for (const id in addons.registered) {
+			var addon = addons.registered[id];
+			var info = addon.getInfo();
+			createAddon(info.id, info.name, info.description, info.author, addon.options)
+		}
 	}
 }
 
@@ -672,6 +689,35 @@ function createAddon(id, title, desc, creator, options) {
 	tagContainer.className = 'settings_tag-container_3yFc4';
 	const operationsDiv = document.createElement('div');
 	operationsDiv.className = 'settings_addon-operations_28nBd';
+
+	const resetButton = document.createElement('button');
+	resetButton.className = 'settings_reset-button_1onc-';
+	resetButton.title = 'Reset';
+
+	const resetButtonImage = document.createElement('img');
+	resetButtonImage.src = 'static/assets/1640b6d968e0a0e13bc3c309a616deaa.svg';
+	resetButtonImage.className = 'settings_reset-button-image_2Tgqe';
+	resetButtonImage.alt = 'Reset';
+	resetButtonImage.draggable = false;
+
+	resetButton.appendChild(resetButtonImage);
+
+	resetButton.addEventListener('click', () => {
+		const allSettings = addons.getSettings();
+
+		if (allSettings[id]) {
+			delete allSettings[id];
+			addons.setSettings(allSettings);
+
+			showRestartPopup();
+			addonContainer.remove();
+		} else {
+			alert('No settings found for this addon.');
+			location.reload();
+		}
+	});
+
+	operationsDiv.appendChild(resetButton);
 
 	headerDiv.appendChild(label);
 	headerDiv.appendChild(tagContainer);
@@ -1102,13 +1148,12 @@ function ManageScripts() {
 	input.type = 'text';
 	input.id = 'script-url-input';
 	input.className = 'script-input';
-	input.placeholder = 'https://example.com/your-script.js';
+	input.placeholder = 'https://supercoolscripts.com/addon.js';
 	input.addEventListener('keydown', (event) => {
 		if (event.key === 'Enter') {
 			addScript();
 		}
 	});
-
 
 	const addButton = document.createElement('button');
 	addButton.className = 'icon-btn add-btn';
