@@ -18,7 +18,7 @@
 				name: 'SVG Text',
 				author: ['pooiod7', 'https://github.com/pooiod'],
 				description: 'Import text as SVG costumes',
-				icon: '//p7scratchextensions.pages.dev/extras/images/icons/AddTextIcon.svg',
+				icon: '//i.ibb.co/sdGNwkjy/Add-Text-Icon.png',
 				requiresRestart: false,
 			};
 		}
