@@ -1,3 +1,5 @@
+// id: P7SVGtext
+
 (function(addons) {
 	'use strict';
 
@@ -21,7 +23,6 @@
 		}
 
 		init() {
-			console.log("init")
 			window.addEventListener('message', (event) => {
 				const receivedMessage = event.data;
 
@@ -36,7 +37,6 @@
 			switch (type) {
 			case "TabChanged":
 				if (data.TAB == "costumes") {
-					console.log(type, data, this.active)
 					if (!this.active) return;
 
 					addons.costumes.addCreationButton(
@@ -57,13 +57,12 @@
 		}
 
 		start() {
-			console.log("enabled")
 			this.active = true;
 		}
 
 		stop() {
-			console.log("disabled")
 			this.active = false;
+			removeCreationButton("P7SVGTextButton");
 		}
 	}
 

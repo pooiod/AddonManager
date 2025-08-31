@@ -254,6 +254,10 @@ if (InAddonManager) {
 				return ReduxStore.getState().scratchGui.editorTab.activeTabIndex == 1
 			},
 
+			removeCreationButton: (id) => {
+				document.getElementById(`btn-costume-add-${id}`)?.remove();
+			},
+
 			addCreationButton: (id, tooltip, image, callback, t)=> {
 				if (!t) t = 0;
 				var buttonId = 'btn-costume-add-' + id;
