@@ -1,1 +1,401 @@
-E
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>ScriptKitten</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --accent-color: #0056b3;
+            --background-color: #F8F9FA;
+            --text-color: #212529;
+            --subtle-gray: #E9ECEF;
+            --banner-color: #FFC107;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: transparent;
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--subtle-gray);
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: color 0.2s, background-color 0.2s;
+            border: 2px solid transparent;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+        nav a:hover, nav a:focus {
+            background-color: var(--subtle-gray);
+            color: var(--primary-color);
+            outline: none;
+        }
+        .wip-banner {
+            background-color: var(--banner-color);
+            color: var(--text-color);
+            text-align: center;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+        }
+        .hero h2 {
+            font-size: 3rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        .hero p.subtitle {
+            font-size: 1.25rem;
+            max-width: 650px;
+            margin: 0 auto 40px auto;
+            color: #555;
+        }
+        .userscript-note {
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        .userscript-note a {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .userscript-note a:hover {
+            text-decoration: underline;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 16px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            border: 2px solid transparent;
+        }
+        .cta-button:hover, .cta-button:focus {
+            transform: translateY(-3px);
+            background-color: var(--accent-color);
+            outline: none;
+        }
+        .cta-button:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 4px;
+        }
+        .features {
+            padding: 80px 0;
+            background-color: white;
+            border-top: 2px solid var(--subtle-gray);
+            border-bottom: 2px solid var(--subtle-gray);
+        }
+        .features h2, .compatibility h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 0;
+            margin-bottom: 60px;
+        }
+        .features-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+        }
+        .feature-item {
+            width: 300px;
+            text-align: center;
+        }
+        .feature-item img {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            object-fit: cover;
+            background-color: var(--subtle-gray);
+            border: 2px solid var(--subtle-gray);
+        }
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .feature-item p {
+            font-size: 1rem;
+            color: #555;
+        }
+        .compatibility {
+            padding: 80px 0;
+            background-color: var(--background-color);
+        }
+        .scroller-container {
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        .compatibility-scroller {
+            display: flex;
+            width: max-content;
+            padding: 10px 0;
+            will-change: transform;
+        }
+        .site-chip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: white;
+            padding: 10px 22px;
+            margin: 0 10px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            transition: transform 0.2s, background-color 0.2s;
+            border: 2px solid var(--subtle-gray);
+        }
+        .site-chip:hover, .site-chip:focus {
+            transform: translateY(-3px);
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .site-chip img {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 20px;
+            background-color: var(--subtle-gray);
+            color: #6c757d;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ScriptKitten</h1>
+            <nav>
+                <a href="addons">Community Addons</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="wip-banner">
+        This project is a work in progress and may not be stable.
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Supercharge your coding experience</h2>
+                <p class="subtitle">A powerful third-party addon manager for modern web-based editors, with a script manager and legacy extension support.</p>
+                <p class="userscript-note">Requires a userscript manager like <a href="https://www.tampermonkey.net/" target="_blank" rel="noopener">Tampermonkey</a> to be installed.</p>
+                <a id="install-button" href="manager.user.js" class="cta-button">Install ScriptKitten</a>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2>What does ScriptKitten do?</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <img src="https://via.placeholder.com/400x250/ecf0f1/34495e?text=Addon+Manager+GIF" alt="GIF recording of the addon manager">
+                        <h3>Custom Addon Manager</h3>
+                        <p>Easily browse, install, and manage comminity made addons.</p>
+                    </div>
+                    <div class="feature-item">
+                        <img src="https://via.placeholder.com/400x250/ecf0f1/34495e?text=Script+Manager+GIF" alt="GIF recording of the script manager">
+                        <h3>Script Manager</h3>
+                        <p>Load and run third-party scripts to modify the editor functionality and themes.</p>
+                    </div>
+                    <div class="feature-item">
+                        <img src="https://via.placeholder.com/400x250/ecf0f1/34495e?text=Legacy+Support+GIF" alt="GIF recording of the legacy compatibility layer">
+                        <h3>Scratch extensions as addons</h3>
+                        <p>ScriptKitten lets you load scratch extensions as scripts that add no blocks.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="compatibility" class="compatibility">
+            <div class="container">
+                <h2>Works With Your Favorite Editors</h2>
+            </div>
+            <div class="scroller-container" id="scroller-container">
+                <div class="compatibility-scroller" id="sites-container">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>A project by pooiod7</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sitesContainer = document.getElementById('sites-container');
+            const installButton = document.getElementById('install-button');
+            const scrollerContainer = document.getElementById('scroller-container');
+
+            const createSiteChip = (url) => {
+                const urlObject = new URL(url);
+                const domain = urlObject.hostname;
+                let inferredTitle = domain.replace(/^www\./, '').split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ').replace(/ (Com|Org|Net|Io|Js|Github)$/, '');
+
+                const chip = document.createElement('a');
+                chip.href = urlObject.origin;
+                chip.className = 'site-chip';
+                chip.target = '_blank';
+                chip.rel = 'noopener noreferrer';
+
+                const icon = document.createElement('img');
+                const title = document.createElement('span');
+
+                if (domain === 'alpha.unsandboxed.org') {
+                    icon.src = 'https://alpha.unsandboxed.org/favicon.ico';
+                    icon.style.filter = 'invert(1)';
+                } else {
+                    icon.src = `https://www.google.com/s2/favicons?sz=64&domain_url=${domain}`;
+                }
+                icon.alt = `${domain} favicon`;
+                icon.onerror = () => { icon.style.display = 'none'; };
+
+                if (inferredTitle.toLowerCase().startsWith('studio')) {
+                    inferredTitle = inferredTitle.substring('studio'.length).trim();
+                }
+                if (domain.includes('github')) {
+                    inferredTitle = inferredTitle.replace(/github/ig, '').trim();
+                }
+                if (domain.includes('js.org')) {
+                    inferredTitle = inferredTitle.replace(/js/ig, '').trim();
+                }
+                title.textContent = inferredTitle.replace(/\s+/g, ' ').trim();
+
+                chip.appendChild(icon);
+                chip.appendChild(title);
+                return chip;
+            };
+
+            const fetchAndDisplaySites = async () => {
+                try {
+                    const response = await fetch('manager.user.js');
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const scriptContent = await response.text();
+
+                    const includeRegex = /\/\/\s*@include\s+(https?:\/\/[^\s]+)/g;
+                    const matchRegex = /\/\/\s*@match\s+(https?:\/\/[^\s]+)/g;
+                    const matches = [...scriptContent.matchAll(includeRegex), ...scriptContent.matchAll(matchRegex)];
+
+                    if (matches.length === 0) {
+                        sitesContainer.innerHTML = '<p>Could not load compatible sites list.</p>';
+                        return;
+                    }
+
+                    const urls = [...new Set(matches.map(match => match[1].trim()))];
+                    const filteredUrls = urls.filter(url => !url.includes('mirror'));
+                    
+                    const chips = filteredUrls.map(url => createSiteChip(url));
+                    
+                    chips.forEach(chip => sitesContainer.appendChild(chip));
+                    
+                    initInfiniteScroll(chips);
+
+                } catch (error) {
+                    console.error('Failed to fetch and process userscript:', error);
+                    sitesContainer.innerHTML = '<p>Error loading compatible sites list.</p>';
+                }
+            };
+
+            const initInfiniteScroll = (initialChips) => {
+                const scrollerWidth = sitesContainer.clientWidth;
+                const containerWidth = scrollerContainer.clientWidth;
+                let clones = 1;
+
+                while (sitesContainer.clientWidth < containerWidth * 2) {
+                    initialChips.forEach(chip => {
+                        sitesContainer.appendChild(chip.cloneNode(true));
+                    });
+                    clones++;
+                    if (clones > 10) break; // safety break
+                }
+
+                let isPaused = false;
+                let scrollPosition = 0;
+                const scrollSpeed = 0.2;
+
+                scrollerContainer.addEventListener('mouseenter', () => isPaused = true);
+                scrollerContainer.addEventListener('mouseleave', () => isPaused = false);
+                
+                function animateScroll() {
+                    if (!isPaused) {
+                        scrollPosition += scrollSpeed;
+                        sitesContainer.style.transform = `translateX(-${scrollPosition}px)`;
+
+                        const firstChip = sitesContainer.firstElementChild;
+                        if (firstChip && scrollPosition >= firstChip.offsetWidth + 20) {
+                            scrollPosition -= (firstChip.offsetWidth + 20);
+                            sitesContainer.appendChild(firstChip);
+                        }
+                    }
+                    requestAnimationFrame(animateScroll);
+                }
+                
+                animateScroll();
+            };
+
+            fetchAndDisplaySites();
+        });
+    </script>
+</body>
+</html>
