@@ -18,6 +18,7 @@
 				name: 'SVG Text',
 				author: ['pooiod7', 'https://github.com/pooiod'],
 				description: 'Import text as SVG costumes',
+				icon: '//p7scratchextensions.pages.dev/extras/images/icons/AddTextIcon.svg',
 				requiresRestart: false,
 			};
 		}
@@ -46,7 +47,7 @@
 
 						async () => {
 							addons.makeWidget(
-								"https://p7scratchextensions.pages.dev/extras/html/SVGtext",
+								"//p7scratchextensions.pages.dev/extras/html/SVGtext",
 								"Text import"
 							);
 						}
