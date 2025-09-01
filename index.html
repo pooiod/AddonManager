@@ -295,7 +295,7 @@
             const createSiteChip = (url) => {
                 const urlObject = new URL(url);
                 const domain = urlObject.hostname;
-                let inferredTitle = domain.replace(/^www\./, '').split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ').replace(/ (Com|Org|Net|Io|Js|Github|page)$/, '');
+                let inferredTitle = domain.replace(/^www\./, '').split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ').replace(/ (Com|Org|Net|Io|Js|Github|Page)$/, '');
 
                 const chip = document.createElement('a');
                 chip.href = urlObject.origin;
