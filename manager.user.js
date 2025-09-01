@@ -462,38 +462,6 @@ if (InAddonManager) {
 	setInterval(updateVM, 1000);
 }
 
-// options = {
-// 	enabled: true,
-// 	test1: {
-// 		type: 'boolean',
-// 		label: 'test input1',
-// 		value: true
-// 	},
-// 	test2: {
-// 		type: 'string',
-// 		label: 'test input2',
-// 		value: "hello"
-// 	},
-// 	test3: {
-// 		type: 'selector',
-// 		label: 'test input3',
-// 		items: ["hello", "sigma"],
-// 		value: "hello"
-// 	},
-// 	test4: {
-// 		type: 'number',
-// 		label: 'test input4',
-// 		max: 10,
-// 		min: 0,
-// 		value: 1
-// 	},
-// 	test5: {
-// 		type: 'color',
-// 		label: 'test input5',
-// 		value: "#ffffff"
-// 	}
-// }
-
 addons.register = (addon) => {
 	if (!addon.getInfo || !addon.getInfo().id || !addon.init || !addon.start || !addon.event) {
 		console.error("Addon is not valid");

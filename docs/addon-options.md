@@ -148,3 +148,6 @@ class MyAddon {
 ```
 
 The `options` object is kept up-to-date by the manager. When a user changes a setting, `this.options` will reflect that new value the next time your addon's code accesses it.
+
+# Next steps
+[ui widgets](#/ui-widgets)
