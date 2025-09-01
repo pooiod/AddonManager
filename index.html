@@ -306,9 +306,10 @@
                 const icon = document.createElement('img');
                 const title = document.createElement('span');
 
-                if (domain === 'alpha.unsandboxed.org') {
+                if (domain === 'alpha..org') {
                     icon.src = 'https://alpha.unsandboxed.org/favicon.ico';
                     icon.style.filter = 'invert(1)';
+                    inferredTitle = "Unsandboxed";
                 } else {
                     icon.src = `https://www.google.com/s2/favicons?sz=64&domain_url=${domain}`;
                 }
