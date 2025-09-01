@@ -11,11 +11,13 @@
     <style>
         :root {
             --primary-color: #007BFF;
+            --primary-color-soft: #3d9bff;
             --accent-color: #0056b3;
             --background-color: #F8F9FA;
             --text-color: #212529;
             --subtle-gray: #E9ECEF;
-            --banner-color: #FFC107;
+            --banner-color: hsl(45, 100%, 86%);
+            --banner-color2: #ffe187;
         }
         *, *::before, *::after {
             box-sizing: border-box;
@@ -76,6 +78,7 @@
             padding: 12px 20px;
             font-weight: 700;
             font-size: 0.95rem;
+            border-bottom: 2px solid var(--banner-color2);
         }
         .hero {
             padding: 100px 0;
@@ -108,7 +111,8 @@
         }
         .cta-button {
             display: inline-block;
-            background-color: var(--primary-color);
+            background-color: var(--primary-color-soft);
+            border: 2px solid var(--primary-color);
             color: white;
             padding: 16px 35px;
             border-radius: 8px;
@@ -117,7 +121,6 @@
             font-family: 'Poppins', sans-serif;
             font-size: 1.1rem;
             transition: transform 0.2s ease, background-color 0.2s ease;
-            border: 2px solid transparent;
         }
         .cta-button:hover, .cta-button:focus {
             transform: translateY(-3px);
@@ -226,6 +229,7 @@
             <h1>ScriptKitten</h1>
             <nav>
                 <a href="addons">Community Addons</a>
+                <a href="/docs">Creation Docs</a>
             </nav>
         </div>
     </header>

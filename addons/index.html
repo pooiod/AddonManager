@@ -24,12 +24,19 @@
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            height: 100%;
+        }
+
         body {
             font-family: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.7;
+            display: flex;
+            flex-direction: column;
         }
 
         h1,
@@ -86,6 +93,7 @@
 
         main {
             padding: 60px 0;
+            flex-grow: 1;
         }
 
         .page-header {
@@ -175,9 +183,12 @@
 
         .addon-actions {
             padding-left: 84px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .screenshots-button {
+        .action-button {
             background: none;
             border: 2px solid var(--subtle-gray);
             color: var(--text-color);
@@ -185,10 +196,10 @@
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s, color 0.2s;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
         }
 
-        .screenshots-button:hover {
+        .action-button:hover {
             background-color: var(--subtle-gray);
             color: var(--primary-color);
         }
@@ -293,7 +304,7 @@
             <h1>ScriptKitten</h1>
             <nav>
                 <a href="/">Home</a>
-                <a href="https://github.com/pooiod/ScriptKitten" target="_blank" rel="noopener">Github</a>
+                <a href="/docs">Creation Docs</a>
             </nav>
         </div>
     </header>
@@ -301,7 +312,7 @@
         <div class="container">
             <div class="page-header">
                 <h2>Community Addons</h2>
-                <input type="search" id="search-bar" placeholder="Search by name, author, or description...">
+                <input type="search" id="search-bar" placeholder="Search by name, author, or description">
             </div>
             <div class="addons-list" id="addons-list">
                 <p class="loading-text">Loading addons...</p>
@@ -337,12 +348,10 @@
                 registered: {},
                 register: (addon) => {
                     if (!addon.getInfo) {
-                        console.error("Addon is missing getInfo method.", addon);
                         return false;
                     }
                     const info = addon.getInfo();
                     if (!info.id || !info.name || !info.author) {
-                        console.error("Addon info is missing required fields (id, name, author).", info);
                         return false;
                     }
                     window.addons.registered[info.id] = info;
@@ -359,11 +368,10 @@
                     const card = document.createElement('div');
                     card.className = 'addon-card';
                     const hasScreenshots = addonInfo.screenshots && addonInfo.screenshots.length > 0;
-                    const actionsHTML = hasScreenshots ? `
-                        <div class="addon-actions">
-                            <button class="screenshots-button" data-addon-id="${addonInfo.id}">View Screenshots</button>
-                        </div>
-                    ` : '';
+                    const screenshotsButton = hasScreenshots ?
+                        `<button class="action-button screenshots-button" data-addon-id="${addonInfo.id}">View Screenshots</button>` :
+                        '';
+                    const copyButton = `<button class="action-button copy-link-button" data-filename="${addonInfo.filename}">Copy Link</button>`;
                     card.innerHTML = `
                         <div class="addon-header">
                             <img src="${addonInfo.icon || 'https://via.placeholder.com/64/cccccc/FFFFFF?text=?'}" alt="${addonInfo.name} icon" class="addon-icon">
@@ -373,7 +381,10 @@
                             </div>
                         </div>
                         <p class="addon-description">${addonInfo.description || 'No description provided.'}</p>
-                        ${actionsHTML}
+                        <div class="addon-actions">
+                            ${screenshotsButton}
+                            ${copyButton}
+                        </div>
                     `;
                     addonsList.appendChild(card);
                 });
@@ -389,19 +400,46 @@
                         addonsList.innerHTML = '<p class="loading-text">No addons found.</p>';
                         return;
                     }
-                    const scriptPromises = jsFiles.map(file => fetch(file.download_url).then(res => res.text()));
-                    const scripts = await Promise.all(scriptPromises);
-                    scripts.forEach(scriptContent => {
+                    const scriptDataPromises = jsFiles.map(async (file) => {
+                        const scriptUrl = `https://scriptkitten.pages.dev/addons/${file.name}`;
+                        try {
+                            const scriptResponse = await fetch(scriptUrl);
+                            if (!scriptResponse.ok) return null;
+                            const content = await scriptResponse.text();
+                            return {
+                                filename: file.name,
+                                content
+                            };
+                        } catch (e) {
+                            return null;
+                        }
+                    });
+                    const scriptsData = (await Promise.all(scriptDataPromises)).filter(Boolean);
+                    const filenameMap = {};
+                    scriptsData.forEach(({
+                        filename,
+                        content
+                    }) => {
+                        const idMatch = content.match(/\/\/\s*id:\s*(\S+)/);
+                        if (idMatch && idMatch[1]) {
+                            const id = idMatch[1];
+                            filenameMap[id] = filename;
+                        }
                         try {
                             const scriptEl = document.createElement('script');
-                            scriptEl.textContent = scriptContent;
+                            scriptEl.textContent = content;
                             document.body.appendChild(scriptEl);
                             document.body.removeChild(scriptEl);
                         } catch (e) {
-                            console.error('Error executing addon script:', e);
+                            console.error(`Error executing addon script ${filename}:`, e);
                         }
                     });
-                    allAddons = Object.values(window.addons.registered);
+                    Object.values(window.addons.registered).forEach(info => {
+                        if (filenameMap[info.id]) {
+                            info.filename = filenameMap[info.id];
+                        }
+                    });
+                    allAddons = Object.values(window.addons.registered).filter(addon => addon.filename);
                     renderAddons(allAddons);
                 } catch (error) {
                     console.error('Failed to load addons:', error);
@@ -429,9 +467,24 @@
                 modalOverlay.style.display = 'none';
             }
             addonsList.addEventListener('click', (e) => {
-                if (e.target.classList.contains('screenshots-button')) {
-                    const addonId = e.target.getAttribute('data-addon-id');
+                const screenshotsButton = e.target.closest('.screenshots-button');
+                const copyButton = e.target.closest('.copy-link-button');
+                if (screenshotsButton) {
+                    const addonId = screenshotsButton.dataset.addonId;
                     openModal(addonId);
+                }
+                if (copyButton) {
+                    const filename = copyButton.dataset.filename;
+                    const url = `https://scriptkitten.pages.dev/addons/${filename}`;
+                    navigator.clipboard.writeText(url).then(() => {
+                        const originalText = copyButton.textContent;
+                        copyButton.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyButton.textContent = originalText;
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                    });
                 }
             });
             searchBar.addEventListener('input', (e) => {

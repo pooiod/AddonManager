@@ -1,21 +1,24 @@
 // ==UserScript==
-// @name         3rd party addons
-// @namespace    http://tampermonkey.net/
-// @version      2025-08-23
-// @description  Adds a custom addon manager to Penguinmod, Turbowarp, ad a few other mods
+// @name         ScriptKitten
+// @namespace    https://scriptkitten.pages.dev
+// @version      08-31-2025
+// @description  Adds a custom addon manager to Penguinmod, Turbowarp, and a few other mods
 // @author       pooiod7
-// @include        https://studio.penguinmod.com/*
-// @include        https://mirror.turbowarp.xyz/*
-// @include        https://turbowarp.org/*
-// @include        https://dinosaurmod.github.io/*
-// @include        https://snail-ide.js.org/*
-// @include        https://librekitten.org/*
-// @include        https://alpha.unsandboxed.org/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=penguinmod.com
+// @updateURL    https://scriptkitten.pages.dev/manager.meta.js
+// @downloadURL  https://scriptkitten.pages.dev/manager.user.js
+// @include      https://studio.penguinmod.com/*
+// @include      https://mirror.turbowarp.xyz/*
+// @include      https://turbowarp.org/*
+// @include      https://dinosaurmod.github.io/*
+// @include      https://snail-ide.js.org/*
+// @include      https://librekitten.org/*
+// @include      https://alpha.unsandboxed.org/*
+// @include      https://ampmod.codeberg.page/*
+// @icon         https://scriptkitten.pages.dev/favicon.ico
 // @grant        none
 // ==/UserScript==
 
-var InAddonManager = window.location.pathname == "/addons.html" || window.location.pathname == "/addons"
+var InAddonManager = window.location.pathname.includes("/addons.html") || window.location.pathname.includes("/addons")
 
 if (InAddonManager) {
 	window.addons = {

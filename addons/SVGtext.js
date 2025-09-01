@@ -6,6 +6,7 @@
 	class P7SVGtext {
 		constructor() {
 			this.active = false;
+			this.GetFile = (file) => { return "//scriptkitten.pages.dev/addons/SVGtext/" + file; }
 		}
 
 		options = {
@@ -18,7 +19,7 @@
 				name: 'SVG Text',
 				author: ['pooiod7', 'https://github.com/pooiod'],
 				description: 'Import text as SVG costumes',
-				icon: '//i.ibb.co/sdGNwkjy/Add-Text-Icon.png',
+				icon: this.GetFile('exticon.png'),
 				requiresRestart: false,
 			};
 		}
@@ -43,11 +44,11 @@
 					addons.costumes.addCreationButton(
 						'P7SVGTextButton',
 						'Add text as SVG',
-						'//p7scratchextensions.pages.dev/extras/images/icons/AddTextIcon.svg',
+						this.GetFile('AddTextIcon.svg'),
 
 						async () => {
 							addons.makeWidget(
-								"//p7scratchextensions.pages.dev/extras/html/SVGtext",
+								this.GetFile("embed.html"),
 								"Text import"
 							);
 						}
