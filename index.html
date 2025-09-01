@@ -253,7 +253,7 @@
                 <h2>What does ScriptKitten do?</h2>
                 <div class="features-grid">
                     <div class="feature-item">
-                        <img src="https://static.thenounproject.com/png/396504-200.png">
+                        <img src="/images/addonmanager.png">
                         <h3>Custom Addon Manager</h3>
                         <p>Easily browse, install, and manage comminity made addons.</p>
                     </div>
@@ -263,7 +263,7 @@
                         <p>Load and run third-party scripts to modify the editor functionality and themes.</p>
                     </div>
                     <div class="feature-item">
-                        <img src="https://www.svgrepo.com/show/306704/scratch.svg">
+                        <img src="https://www.vectorlogo.zone/logos/mit_scratch/mit_scratch-official.svg">
                         <h3>Scratch extensions as addons</h3>
                         <p>ScriptKitten lets you load scratch extensions as scripts that add no blocks.</p>
                     </div>
@@ -288,6 +288,11 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const userAgent = navigator.userAgent;
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(userAgent);
+            const isFirefoxAndroid = /Android/i.test(userAgent) && /Firefox/i.test(userAgent);
+            const isOrioniOS = /Orion.*(iPhone|iPad|iPod)/i.test(userAgent);
+
             const sitesContainer = document.getElementById('sites-container');
             const installButton = document.getElementById('install-button');
             const scrollerContainer = document.getElementById('scroller-container');
@@ -375,7 +380,7 @@
                         sitesContainer.appendChild(chip.cloneNode(true));
                     });
                     clones++;
-                    if (clones > 10) break; // safety break
+                    if (clones > 10) break;
                 }
 
                 let isPaused = false;
@@ -403,6 +408,69 @@
             };
 
             fetchAndDisplaySites();
+
+            if (/Android|iPhone|iPad|iPod/i.test(userAgent) &&
+                !(/Android/i.test(userAgent) && /Firefox/i.test(userAgent)) &&
+                !/Orion.*(iPhone|iPad|iPod)/i.test(userAgent)
+            ) {
+                const notificationContainer = document.createElement('div');
+                notificationContainer.style.position = 'fixed';
+                notificationContainer.style.bottom = '2rem';
+                notificationContainer.style.left = '50%';
+                notificationContainer.style.transform = 'translate(-50%, 150%)';
+                notificationContainer.style.maxWidth = '600px';
+                notificationContainer.style.width = 'calc(100% - 2rem)';
+                notificationContainer.style.padding = '1.25rem 2rem';
+                notificationContainer.style.backgroundColor = '#FFFFFF';
+                notificationContainer.style.border = '2px solid #E9ECEF';
+                notificationContainer.style.color = '#1F2937';
+                notificationContainer.style.borderRadius = '0.75rem';
+                notificationContainer.style.textAlign = 'left';
+                notificationContainer.style.zIndex = '9999';
+                notificationContainer.style.fontFamily = 'Inter, sans-serif';
+                notificationContainer.style.cursor = 'pointer';
+                notificationContainer.style.opacity = '0';
+                notificationContainer.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease-in-out';
+                notificationContainer.style.display = 'flex';
+                notificationContainer.style.alignItems = 'center';
+                notificationContainer.style.gap = '1.5rem';
+                
+                const title = document.createElement('h2');
+                title.textContent = 'Desktop Required';
+                title.style.fontSize = '1.125rem';
+                title.style.fontWeight = '600';
+                title.style.margin = '0';
+
+                const paragraph = document.createElement('p');
+                paragraph.textContent = 'This project requires a desktop browser that supports extensions.';
+                paragraph.style.fontSize = '0.875rem';
+                paragraph.style.margin = '0';
+                
+                const textContent = document.createElement('div');
+                textContent.style.display = 'flex';
+                textContent.style.flexDirection = 'column';
+                textContent.style.gap = '0.25rem';
+                textContent.appendChild(title);
+                textContent.appendChild(paragraph);
+
+                notificationContainer.appendChild(textContent);
+                document.body.appendChild(notificationContainer);
+
+                setTimeout(() => {
+                    notificationContainer.style.transform = 'translate(-50%, 0)';
+                    notificationContainer.style.opacity = '1';
+                }, 100);
+
+                const hideNotification = () => {
+                    notificationContainer.style.transform = 'translate(-50%, 150%)';
+                    notificationContainer.style.opacity = '0';
+                    notificationContainer.addEventListener('transitionend', () => notificationContainer.remove(), { once: true });
+                };
+                
+                setTimeout(hideNotification, 5000);
+
+                notificationContainer.addEventListener('click', hideNotification);
+            }
         });
     </script>
 </body>
