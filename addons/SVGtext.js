@@ -20,6 +20,7 @@
 				author: ['pooiod7', 'https://github.com/pooiod'],
 				description: 'Import text as SVG costumes',
 				icon: this.GetFile('exticon.png'),
+				screenshots: [this.GetFile("screenshot.png")],
 				requiresRestart: false,
 			};
 		}
