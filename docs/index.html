@@ -1,1 +1,330 @@
-wip
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Documentation - ScriptKitten</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --accent-color: #0056b3;
+            --background-color: #F8F9FA;
+            --text-color: #212529;
+            --subtle-gray: #E9ECEF;
+            --card-background: #FFFFFF;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        header {
+            background-color: var(--card-background);
+            padding: 1rem 0;
+            flex-shrink: 0;
+        }
+
+        header .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: color 0.2s, background-color 0.2s;
+            border: 2px solid transparent;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+
+        nav a:hover,
+        nav a:focus {
+            background-color: var(--subtle-gray);
+            color: var(--primary-color);
+            outline: none;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+            background-color: var(--card-background);
+        }
+
+        #sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        #sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #sidebar-nav li a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+            border-radius: 8px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        #sidebar-nav li a:hover {
+            background-color: var(--subtle-gray);
+        }
+
+        #sidebar-nav li a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        #main-content {
+            flex-grow: 1;
+            padding: 2rem 3rem;
+            overflow-y: auto;
+            background-color: var(--background-color);
+            border-left: 2px solid var(--subtle-gray);
+            border-top: 2px solid var(--subtle-gray);
+        }
+
+        #docs-article {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #docs-article h1,
+        #docs-article h2,
+        #docs-article h3 {
+            border-bottom: 2px solid var(--subtle-gray);
+            padding-bottom: 10px;
+            margin-top: 2rem;
+        }
+
+        #docs-article code {
+            background-color: var(--subtle-gray);
+            padding: 0.2em 0.4em;
+            margin: 0;
+            font-size: 85%;
+            border-radius: 6px;
+            font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        }
+
+        #docs-article pre {
+            background-color: var(--subtle-gray);
+            padding: 16px;
+            overflow: auto;
+            line-height: 1.45;
+            border-radius: 6px;
+        }
+
+        #docs-article pre code {
+            padding: 0;
+            margin: 0;
+            font-size: 100%;
+            background-color: transparent;
+        }
+
+        #docs-article a {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        #docs-article blockquote {
+            margin: 0;
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 0.25em solid #dfe2e5;
+        }
+
+        #docs-article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--subtle-gray);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 4rem auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            #sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-bottom: 2px solid var(--subtle-gray);
+            }
+            #main-content {
+                border-left: none;
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ScriptKitten</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/addons">Community Addons</a>
+            </nav>
+        </div>
+    </header>
+    <div class="content-wrapper">
+        <aside id="sidebar">
+            <ul id="sidebar-nav">
+                <!-- Navigation links are populated by JS -->
+            </ul>
+        </aside>
+        <main id="main-content">
+            <article id="docs-article">
+                <div class="spinner"></div>
+            </article>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const docsArticle = document.getElementById('docs-article');
+            const repo = 'pooiod/ScriptKitten';
+            const docsPath = 'docs';
+
+            function formatFileName(filename) {
+                return filename
+                    .replace(/\.md$/, '')
+                    .replace(/-/g, ' ')
+                    .replace(/\b\w/g, char => char.toUpperCase());
+            }
+
+            async function loadSidebar() {
+                try {
+                    const response = await fetch(`https://api.github.com/repos/${repo}/contents/${docsPath}`);
+                    if (!response.ok) throw new Error('Failed to fetch docs list from GitHub');
+                    const files = await response.json();
+
+                    const mdFiles = files.filter(file => file.name.endsWith('.md') && file.type === 'file' && !file.name.startsWith('!'));
+
+                    sidebarNav.innerHTML = mdFiles
+                        .map(file => {
+                            const cleanName = file.name.replace('.md', '');
+                            return `
+                                <li>
+                                    <a href="#/${cleanName}" data-filename="${file.name}">${formatFileName(file.name)}</a>
+                                </li>
+                            `;
+                        })
+                        .join('');
+                } catch (error) {
+                    console.error('Error loading sidebar:', error);
+                    sidebarNav.innerHTML = '<li><a>Error loading navigation</a></li>';
+                }
+            }
+
+            async function loadContent(filename) {
+                try {
+                    docsArticle.innerHTML = '<div class="spinner"></div>';
+                    const response = await fetch(`./${filename}`);
+                    if (!response.ok) throw new Error(`File not found: ${filename}`);
+
+                    const markdownText = await response.text();
+                    docsArticle.innerHTML = marked.parse(markdownText);
+
+                    document.querySelectorAll('#sidebar-nav li a').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.dataset.filename === filename) {
+                            link.classList.add('active');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error loading content:', error);
+                    docsArticle.innerHTML = `<h2>Error</h2><p>Could not load the document '${filename}'.</p>`;
+                }
+            }
+
+            function handleRouteChange() {
+                const hash = window.location.hash.substring(2);
+                const filename = hash ? `${hash}.md` : 'intro.md';
+                loadContent(filename);
+            }
+
+            window.addEventListener('hashchange', handleRouteChange);
+
+            async function initialize() {
+                await loadSidebar();
+                handleRouteChange();
+            }
+
+            initialize();
+        });
+    </script>
+</body>
+</html>

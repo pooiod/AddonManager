@@ -47,7 +47,9 @@ if (InAddonManager) {
 		sendEvent: (type, data) => {
 			for (const key in addons.registered) {
 				const addon = addons.registered[key];
-				addon.event(type, data);
+				if (addon.options.enabled) {
+					addon.event(type, data);
+				}
 			}
 		},
 
@@ -59,12 +61,17 @@ if (InAddonManager) {
 
 			for (const id in addons.registered) {
 				var addon = addons.registered[id];
-				var wasenabled = addon.options.enabled;
+				var oldoptions = addon.options;
 				if (addon.options) {
+					if (oldoptions != settings[id] && (settings[id].enabled && !oldoptions.enabled)) {
+						setTimeout(() => {
+							addon.sendEvent("OptionsChanged", {});
+						}, 100);
+					}
 					addon.options = settings[id] || addon.options;
 				}
 
-				if (wasenabled != addon.options.enabled) {
+				if (oldoptions.enabled != addon.options.enabled) {
 					if (addon.options.enabled) {
 						if (addon.firstStart) {
 							addon.init();
@@ -197,7 +204,7 @@ if (InAddonManager) {
 			title.id = "WidgetTitle";
 			title.innerHTML = pageTitle || "Widget";
 
-			const widgetframe = document.createElement(html.startsWith("http")?'iframe':'div');
+			const widgetframe = document.createElement((html.startsWith("http")||html.startsWith("//"))?'iframe':'div');
 			widgetframe.style.width = '100%';
 			widgetframe.style.height = `calc(100% - 50px)`;
 			widgetframe.style.marginTop = '50px';
@@ -207,7 +214,7 @@ if (InAddonManager) {
 			widgetframe.style.borderBottomLeftRadius = '10px';
 			widgetframe.style.borderBottomRightRadius = '10px';
 			widgetframe.style.backgroundColor = theme=="light"?"white":"black";
-			if (html.startsWith("http")) {
+			if (html.startsWith("http")||html.startsWith("//")) {
 				widgetframe.src = html;
 			} else {
 				widgetframe.innerHTML = html;
@@ -426,12 +433,17 @@ if (InAddonManager) {
 
 			for (const id in addons.registered) {
 				var addon = addons.registered[id];
-				var wasenabled = addon.options.enabled;
+				var oldoptions = addon.options;
 				if (addon.options) {
+					if (oldoptions != newSettings[id] && (newSettings[id].enabled && !oldoptions.enabled)) {
+						setTimeout(() => {
+							addon.sendEvent("OptionsChanged", {});
+						}, 100);
+					}
 					addon.options = newSettings[id] || addon.options;
 				}
 
-				if (wasenabled != addon.options.enabled) {
+				if (oldoptions.enabled != addon.options.enabled) {
 					if (addon.options.enabled) {
 						if (addon.firstStart) {
 							addon.init();
