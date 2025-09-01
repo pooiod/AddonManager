@@ -295,7 +295,7 @@
             const createSiteChip = (url) => {
                 const urlObject = new URL(url);
                 const domain = urlObject.hostname;
-                let inferredTitle = domain.replace(/^www\./, '').split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ').replace(/ (Com|Org|Net|Io|Js|Github|codeberg|page)$/, '');
+                let inferredTitle = domain.replace(/^www\./, '').split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ').replace(/ (Com|Org|Net|Io|Js|Github|page)$/, '');
 
                 const chip = document.createElement('a');
                 chip.href = urlObject.origin;
@@ -320,6 +320,9 @@
                 }
                 if (domain.includes('github')) {
                     inferredTitle = inferredTitle.replace(/github/ig, '').trim();
+                }
+                if (domain.includes('codeberg')) {
+                    inferredTitle = inferredTitle.replace(/codeberg/ig, '').trim();
                 }
                 if (domain.includes('js.org')) {
                     inferredTitle = inferredTitle.replace(/js/ig, '').trim();
