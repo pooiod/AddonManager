@@ -365,7 +365,7 @@
 
                     const mdFiles = files.filter(file => file.endsWith('.md') && !file.startsWith('!'));
 
-                    sidebarNav.innerHTML = mdFiles.reverse().map(file => {
+                    sidebarNav.innerHTML = mdFiles.map(file => {
                         const cleanName = file.replace('.md', '');
                         return `<li><a href="#/${cleanName}" data-filename="${file}">${formatFileName(file)}</a></li>`;
                     }).join('');
