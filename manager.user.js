@@ -353,6 +353,10 @@ if (InAddonManager) {
 				}
 			},
 
+			removeCreationButton(id) {
+				document.getElementById("btn-costume-add-" + id).?remove();
+			},
+
 			add: async (name, url) => {
 				await fetch(url)
 					.then((r) => r.arrayBuffer())
