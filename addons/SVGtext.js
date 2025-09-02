@@ -65,7 +65,7 @@
 
 		stop() {
 			this.active = false;
-			addons.removeCreationButton("P7SVGTextButton");
+			addons.costumes.removeCreationButton("P7SVGTextButton");
 		}
 	}
 
