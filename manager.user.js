@@ -354,7 +354,7 @@ if (InAddonManager) {
 			},
 
 			removeCreationButton: (id) => {
-				document.getElementById("btn-costume-add-" + id).?remove();
+				document.getElementById("btn-costume-add-" + id)?.remove();
 			},
 
 			add: async (name, url) => {
