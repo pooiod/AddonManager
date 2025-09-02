@@ -268,7 +268,7 @@ if (InAddonManager) {
 				document.getElementById(`btn-costume-add-${id}`)?.remove();
 			},
 
-			addCreationButton: (id, tooltip, image, callback, t)=> {
+			addCreationButton: (id, tooltip, image, callback, t) => {
 				if (!t) t = 0;
 				var buttonId = 'btn-costume-add-' + id;
 
@@ -353,7 +353,7 @@ if (InAddonManager) {
 				}
 			},
 
-			removeCreationButton(id) {
+			removeCreationButton: (id) => {
 				document.getElementById("btn-costume-add-" + id).?remove();
 			},
 
