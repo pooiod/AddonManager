@@ -13,6 +13,7 @@
 // @include      https://snail-ide.js.org/*
 // @include      https://librekitten.org/*
 // @include      https://alpha.unsandboxed.org/*
+// @include      https://espressoblocks.com/*
 // @icon         https://scriptkitten.pages.dev/favicon.ico
 // @grant        none
 // ==/UserScript==
