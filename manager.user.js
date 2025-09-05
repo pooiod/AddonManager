@@ -252,6 +252,15 @@ if (InAddonManager) {
 			return [overlay, widgetframe, title, () => document.getElementById("widgetoverlay"), closeButton];
 		},
 
+		isCorsDomain: (url) => {
+            var domain = new URL(url).hostname;
+            return [
+				"raw.githubusercontent.com",
+				"api.allorigins.win",
+				window.location.host
+			].includes(domain);
+        },
+
 		code: {
 			isActive: () => {
 				return ReduxStore.getState().scratchGui.editorTab.activeTabIndex == 0
